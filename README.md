@@ -4,12 +4,6 @@
 
 Dependências circulares ocorrem quando dois ou mais beans em uma aplicação Spring Boot dependem uns dos outros, resultando em um ciclo que impede o Spring de criar os beans corretamente. Este repositório demonstra como evitar dependências circulares utilizando soluções como a criação de um terceiro serviço ou o uso de herança com uma `BaseService`.
 
-## Soluções para Dependência Circular
-
-### 1. Criação de um Terceiro Serviço
-
-Uma maneira eficaz de resolver dependências circulares é introduzir um terceiro serviço que contenha a lógica compartilhada, evitando assim a dependência direta entre os dois serviços originais.
-
 #### Exemplo
 
 Suponha que temos dois serviços, `ServiceA` e `ServiceB`, que dependem um do outro.
@@ -45,4 +39,45 @@ public class ServiceB {
 
 ```
 
-Para resolver a dependência circular, criamos um terceiro serviço, CommonService.
+## Soluções para Dependência Circular
+
+### 1. Criação de um Terceiro Serviço
+
+Uma maneira eficaz de resolver dependências circulares é introduzir um terceiro serviço que contenha a lógica compartilhada, evitando assim a dependência direta entre os dois serviços originais.
+
+```java
+@Service
+public class CommonService {
+    public void commonMethod() {
+        // Lógica compartilhada
+    }
+}
+
+@Service
+public class ServiceA {
+    private final CommonService commonService;
+
+    @Autowired
+    public ServiceA(CommonService commonService) {
+        this.commonService = commonService;
+    }
+
+    public void methodA() {
+        commonService.commonMethod();
+    }
+}
+
+@Service
+public class ServiceB {
+    private final CommonService commonService;
+
+    @Autowired
+    public ServiceB(CommonService commonService) {
+        this.commonService = commonService;
+    }
+
+    public void methodB() {
+        commonService.commonMethod();
+    }
+}
+```
