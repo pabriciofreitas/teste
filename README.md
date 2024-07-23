@@ -11,13 +11,9 @@ Suponha que temos dois serviços, `ServiceA` e `ServiceB`, que dependem um do ou
 ```java
 @Service
 public class ServiceA {
-    private final ServiceB serviceB;
-
     @Autowired
-    public ServiceA(ServiceB serviceB) {
-        this.serviceB = serviceB;
-    }
-
+    private final ServiceB serviceB;
+  
     public void methodA() {
         serviceB.methodB();
     }
@@ -25,12 +21,8 @@ public class ServiceA {
 
 @Service
 public class ServiceB {
-    private final ServiceA serviceA;
-
     @Autowired
-    public ServiceB(ServiceA serviceA) {
-        this.serviceA = serviceA;
-    }
+    private final ServiceA serviceA;
 
     public void methodB() {
         serviceA.methodA();
@@ -55,12 +47,8 @@ public class CommonService {
 
 @Service
 public class ServiceA {
-    private final CommonService commonService;
-
     @Autowired
-    public ServiceA(CommonService commonService) {
-        this.commonService = commonService;
-    }
+    private final CommonService commonService;
 
     public void methodA() {
         commonService.commonMethod();
@@ -69,12 +57,8 @@ public class ServiceA {
 
 @Service
 public class ServiceB {
-    private final CommonService commonService;
-
     @Autowired
-    public ServiceB(CommonService commonService) {
-        this.commonService = commonService;
-    }
+    private final CommonService commonService;
 
     public void methodB() {
         commonService.commonMethod();
@@ -94,13 +78,6 @@ public abstract class BaseService {
     protected void logInfo(String message) {
         System.out.println("INFO: " + message);
     }
-
-    protected void logError(String message, Exception e) {
-        System.err.println("ERROR: " + message);
-        e.printStackTrace();
-    }
-
-    // Qualquer outra lógica comum aos serviços
 }
 
 
@@ -110,11 +87,6 @@ public class UserService extends BaseService {
         logInfo("Creating user...");
         // Lógica específica para criar usuário
     }
-
-    public void deleteUser() {
-        logInfo("Deleting user...");
-        // Lógica específica para deletar usuário
-    }
 }
 
 @Service
@@ -122,11 +94,6 @@ public class ProductService extends BaseService {
     public void createProduct() {
         logInfo("Creating product...");
         // Lógica específica para criar produto
-    }
-
-    public void deleteProduct() {
-        logInfo("Deleting product...");
-        // Lógica específica para deletar produto
     }
 }
 ```
