@@ -1,4 +1,4 @@
-# Resolução de Problemas de Dependência Circular em Spring Boot
+# Dependência Circular
 
 ## Introdução
 
