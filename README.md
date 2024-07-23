@@ -42,3 +42,99 @@ public class ServiceB {
         serviceA.methodA();
     }
 }
+Para resolver a dependência circular, criamos um terceiro serviço, CommonService.
+
+java
+Copiar código
+@Service
+public class CommonService {
+    public void commonMethod() {
+        // Lógica compartilhada
+    }
+}
+
+@Service
+public class ServiceA {
+    private final CommonService commonService;
+
+    @Autowired
+    public ServiceA(CommonService commonService) {
+        this.commonService = commonService;
+    }
+
+    public void methodA() {
+        commonService.commonMethod();
+    }
+}
+
+@Service
+public class ServiceB {
+    private final CommonService commonService;
+
+    @Autowired
+    public ServiceB(CommonService commonService) {
+        this.commonService = commonService;
+    }
+
+    public void methodB() {
+        commonService.commonMethod();
+    }
+}
+2. Utilização de uma BaseService
+Outra abordagem é centralizar a lógica comum em uma classe base que será estendida pelos serviços específicos.
+
+Exemplo
+Criação da BaseService.
+
+java
+Copiar código
+package com.example.service;
+
+public abstract class BaseService {
+    // Métodos comuns
+    protected void logInfo(String message) {
+        System.out.println("INFO: " + message);
+    }
+
+    protected void logError(String message, Exception e) {
+        System.err.println("ERROR: " + message);
+        e.printStackTrace();
+    }
+
+    // Qualquer outra lógica comum aos serviços
+}
+Criação dos serviços específicos.
+
+java
+Copiar código
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService extends BaseService {
+    public void createUser() {
+        logInfo("Creating user...");
+        // Lógica específica para criar usuário
+    }
+
+    public void deleteUser() {
+        logInfo("Deleting user...");
+        // Lógica específica para deletar usuário
+    }
+}
+
+@Service
+public class ProductService extends BaseService {
+    public void createProduct() {
+        logInfo("Creating product...");
+        // Lógica específica para criar produto
+    }
+
+    public void deleteProduct() {
+        logInfo("Deleting product...");
+        // Lógica específica para deletar produto
+    }
+}
+Conclusão
+Evitar dependências circulares é crucial para a saúde do seu código e para garantir que sua aplicação Spring Boot funcione corretamente. Utilizando a criação de um terceiro serviço ou a herança de uma BaseService, você pode resolver problemas de dependência circular de maneira eficaz.
