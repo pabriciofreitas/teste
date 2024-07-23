@@ -42,3 +42,7 @@ public class ServiceB {
         serviceA.methodA();
     }
 }
+
+java```
+
+Para resolver a dependência circular, criamos um terceiro serviço, CommonService.
