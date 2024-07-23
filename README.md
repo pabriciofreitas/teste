@@ -43,6 +43,6 @@ public class ServiceB {
     }
 }
 
-java```
+```
 
 Para resolver a dependência circular, criamos um terceiro serviço, CommonService.
