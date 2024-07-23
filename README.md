@@ -81,3 +81,52 @@ public class ServiceB {
     }
 }
 ```
+
+
+### 2. Utilização de uma BaseService
+
+Outra abordagem é centralizar a lógica comum em uma classe base que será estendida pelos serviços específicos.
+
+
+```java
+public abstract class BaseService {
+    // Métodos comuns
+    protected void logInfo(String message) {
+        System.out.println("INFO: " + message);
+    }
+
+    protected void logError(String message, Exception e) {
+        System.err.println("ERROR: " + message);
+        e.printStackTrace();
+    }
+
+    // Qualquer outra lógica comum aos serviços
+}
+
+
+@Service
+public class UserService extends BaseService {
+    public void createUser() {
+        logInfo("Creating user...");
+        // Lógica específica para criar usuário
+    }
+
+    public void deleteUser() {
+        logInfo("Deleting user...");
+        // Lógica específica para deletar usuário
+    }
+}
+
+@Service
+public class ProductService extends BaseService {
+    public void createProduct() {
+        logInfo("Creating product...");
+        // Lógica específica para criar produto
+    }
+
+    public void deleteProduct() {
+        logInfo("Deleting product...");
+        // Lógica específica para deletar produto
+    }
+}
+```
